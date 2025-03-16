@@ -1,5 +1,3 @@
-# docker run --rm --platform linux/amd64 -v $(pwd):/app -w /app sagemath/sagemath 'sage ./fri.sage'
-
 from merkle import MerkleTree, hash
 
 F = GF(97)

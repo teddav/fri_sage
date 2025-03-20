@@ -108,6 +108,13 @@ def verify(z: F, queries: list[tuple[EXT, EXT, list[bytes]]], commitments: list[
 
         f_z_minus = queries[i][1]
         verif = (((alphas[i] + omega) / (2*omega)) * f_z) + (((alphas[i] - omega) / (2*(-omega))) * f_z_minus)
+
+        # we need to make sure that the commited polynomial's evaluations are in F (and not in the extension)
+        # only the next layers are in the extension (because of alpha)
+        # so: if we're verifying the first layer, we add a check
+        if i == 0:
+            assert(f_z in F)
+            assert(f_z_minus in F)
         
         if previous_round:
             assert f_z == previous_round

@@ -13,11 +13,12 @@ BLOWUP_FACTOR = 4
 
 # split poly in even and odd coefficients
 def split_polynomial(poly: R) -> tuple[R, R]:
-    x = poly.parent().gen()
+    # x = poly.parent().gen()
     coeffs = poly.coefficients(sparse=False)
     deg = poly.degree()
     Pe = R(sum(coeffs[i] * x^(i//2) for i in range(0, deg + 1, 2)))
     Po = R(sum(coeffs[i] * x^((i-1)//2) for i in range(1, deg + 1, 2)))
+    assert(Pe(x^2) + x * Po(x^2) == poly)
     return Pe, Po
 
 # fold (commit) polynomial with random alpha

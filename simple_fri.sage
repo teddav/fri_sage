@@ -1,10 +1,11 @@
 F = GF(17)
 R.<x> = F[]
 
-DOMAIN_SIZE = 16
-
 # P = R.random_element(degree=7)
 P = 3*x^7 + 2*x^6 + 10*x^5 + 4*x^4 + 9*x^3 + 13*x^2 + 10*x + 2
+
+# reed solomon extension by a factor of 4
+DOMAIN_SIZE = P.degree() * 4
 
 # split poly in even and odd coefficients
 def split_polynomial(poly: R) -> tuple[R, R]:
@@ -23,7 +24,7 @@ def fold_polynomial(poly: R, alpha: F) -> R:
 
 # evaluate poly over the domain
 def evaluate_polynomial(poly: R) -> list[F]:
-    return [poly(i) for i in range(DOMAIN_SIZE + 1)]
+    return [poly(i) for i in range(DOMAIN_SIZE)]
 
 # ROUND 1
 evaluations1 = evaluate_polynomial(P)
@@ -75,3 +76,5 @@ round3_check = (((alpha3 + z4) / (2*z4)) * P_z4) + (((alpha3 - z4) / (2*(-z4))) 
 # in the last check, we verify that it's equal to the last folded polynomial
 # a constant, which is known by the verifier
 assert(round3_check == folded3)
+
+print("VERIFIED!")

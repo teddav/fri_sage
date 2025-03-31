@@ -7,10 +7,10 @@ Z = prod((x - i) for i in range(10))
 # first we make sure P == 0 for x < 10
 points = [[i, 0] for i in range(10)]
 # then we just add random points up to 100
-points += [[i, F.random_element()] for i in range(10, 100)]
+points += [[i, F.random_element()] for i in range(10, 101)]
 P = R.lagrange_polynomial(points)
 
-assert(P.degree() == 99)
+assert(P.degree() == 100)
 assert(P % Z == 0)
 
 Q = P // Z
@@ -30,12 +30,15 @@ for _ in range(5):
     z = Integer(F.random_element()) % 1000
     assert(evaluations_P[z] == evaluations_Q[z] * evaluations_Z[z])
 
-# we generate a random P of degree higher than 100
-P_fake = R.random_element(degree=2000)
+# we generate a random P
+P_fake = R.random_element(degree=100)
 evaluations_P_fake = evaluate(P_fake)
 evaluations_Q_fake = [P_fake(i) / Z(i) for i in EVALUATION_DOMAIN]
 
-print("final check")
 for _ in range(5):
     z = Integer(F.random_element()) % 1000
     assert(evaluations_P_fake[z] == evaluations_Q_fake[z] * evaluations_Z[z])
+
+# we recover Q from the fake evaluations
+Q_fake = R.lagrange_polynomial(zip(EVALUATION_DOMAIN, evaluations_Q_fake))
+print("Q' degree = ", Q_fake.degree())

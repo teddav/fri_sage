@@ -5,7 +5,7 @@ R.<x> = F[]
 P = 3*x^7 + 2*x^6 + 10*x^5 + 4*x^4 + 9*x^3 + 13*x^2 + 10*x + 2
 
 # reed solomon extension by a factor of 4
-DOMAIN_SIZE = P.degree() * 4
+DOMAIN_SIZE = (P.degree() + 1) * 4
 
 # split poly in even and odd coefficients
 def split_polynomial(poly: R) -> tuple[R, R]:
